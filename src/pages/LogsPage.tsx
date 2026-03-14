@@ -26,7 +26,7 @@ export default function LogsPage() {
         .limit(100);
 
       if (typeFilter !== 'all') {
-        query = query.eq('log_type', typeFilter);
+        query = query.eq('log_type', typeFilter as 'login' | 'user_action' | 'admin_action' | 'security');
       }
       if (search) {
         query = query.ilike('action', `%${search}%`);

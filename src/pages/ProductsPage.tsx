@@ -25,7 +25,7 @@ export default function ProductsPage() {
         .order('created_at', { ascending: false });
 
       if (statusFilter !== 'all') {
-        query = query.eq('status', statusFilter);
+        query = query.eq('status', statusFilter as 'pending' | 'approved' | 'rejected');
       }
 
       const { data, error } = await query;

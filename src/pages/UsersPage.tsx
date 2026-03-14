@@ -25,26 +25,33 @@ export default function UsersPage() {
   const { data: users, isLoading } = useQuery({
     queryKey: ['users', roleFilter, statusFilter, search],
     queryFn: async () => {
-      let query = supabase
+      const { data: profiles, error: pError } = await supabase
         .from('profiles')
-        .select(`*, user_roles(role, status, last_login)`)
+        .select('*')
         .order('created_at', { ascending: false });
+      if (pError) throw pError;
+
+      const { data: roles, error: rError } = await supabase
+        .from('user_roles')
+        .select('*');
+      if (rError) throw rError;
+
+      let combined = (profiles || []).map(p => ({
+        ...p,
+        userRole: roles?.find(r => r.user_id === p.user_id),
+      }));
 
       if (search) {
-        query = query.or(`full_name.ilike.%${search}%,email.ilike.%${search}%`);
+        const s = search.toLowerCase();
+        combined = combined.filter(u => u.full_name?.toLowerCase().includes(s) || u.email?.toLowerCase().includes(s));
       }
-
-      const { data, error } = await query;
-      if (error) throw error;
-
-      let filtered = data || [];
       if (roleFilter !== 'all') {
-        filtered = filtered.filter(u => u.user_roles?.some((r: any) => r.role === roleFilter));
+        combined = combined.filter(u => u.userRole?.role === roleFilter);
       }
       if (statusFilter !== 'all') {
-        filtered = filtered.filter(u => u.user_roles?.some((r: any) => r.status === statusFilter));
+        combined = combined.filter(u => u.userRole?.status === statusFilter);
       }
-      return filtered;
+      return combined;
     },
   });
 
