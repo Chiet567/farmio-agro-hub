@@ -69,9 +69,9 @@ export default function UsersPage() {
     },
   });
 
-  const getRole = (user: any) => user.user_roles?.[0]?.role || 'buyer';
-  const getStatus = (user: any) => user.user_roles?.[0]?.status || 'pending';
-  const getLastLogin = (user: any) => user.user_roles?.[0]?.last_login;
+  const getRole = (user: any) => user.userRole?.role || 'buyer';
+  const getStatus = (user: any) => user.userRole?.status || 'pending';
+  const getLastLogin = (user: any) => user.userRole?.last_login;
 
   const statusMap: Record<string, string> = {
     active: t('status.active'),
