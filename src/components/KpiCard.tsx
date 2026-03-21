@@ -9,7 +9,7 @@ interface KpiCardProps {
   index?: number;
 }
 
-export function KpiCard({ title, value, icon, trend }: KpiCardProps) {
+export function KpiCard({ title, value, icon: Icon, suffix, trend }: KpiCardProps) {
   return (
     <div className="rounded-xl border bg-card text-card-foreground shadow-sm p-6">
       <div className="flex flex-row items-center justify-between space-y-0 pb-2">
