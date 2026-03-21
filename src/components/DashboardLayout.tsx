@@ -1,19 +1,17 @@
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
+import { ReactNode } from 'react';
+import { AppSidebar } from './AppSidebar';
 
-// Add this inside your DashboardLayout component
-const mainContentRef = useRef<HTMLDivElement>(null);
+interface DashboardLayoutProps {
+  children: ReactNode;
+}
 
-useEffect(() => {
-  if (mainContentRef.current) {
-    gsap.fromTo(mainContentRef.current,
-      { opacity: 0 },
-      { opacity: 1, duration: 0.4, ease: "power2.out" }
-    );
-  }
-}, []);
-
-// Wrap your main content with:
-<div ref={mainContentRef} className="flex-1 overflow-auto p-6">
-  {children}
-</div>
+export function DashboardLayout({ children }: DashboardLayoutProps) {
+  return (
+    <div className="flex min-h-screen bg-gray-50">
+      <AppSidebar />
+      <main className="flex-1 p-6">
+        {children}
+      </main>
+    </div>
+  );
+}
