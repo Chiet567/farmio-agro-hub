@@ -1,8 +1,12 @@
+import { type LucideIcon } from 'lucide-react';
+
 interface KpiCardProps {
   title: string;
   value: number;
-  icon: React.ReactNode;
+  icon: LucideIcon;
+  suffix?: string;
   trend?: number;
+  index?: number;
 }
 
 export function KpiCard({ title, value, icon, trend }: KpiCardProps) {
